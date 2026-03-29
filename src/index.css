@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-aura-primary: #ffffff;
+  --color-aura-secondary: #1a1a1a;
+  --color-aura-accent: #3b82f6;
+}
+
+@layer base {
+  body {
+    @apply bg-[#020202] text-white antialiased overflow-x-hidden;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08];
+    box-shadow: 
+      0 4px 24px -1px rgba(0, 0, 0, 0.2),
+      inset 0 0 20px 0 rgba(255, 255, 255, 0.02);
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+
+  .bg-mesh {
+    background-color: #020202;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(147, 51, 234, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(147, 51, 234, 0.05) 0px, transparent 50%);
+  }
+}
+
+@keyframes aura-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(2%, 4%) scale(1.1); }
+  66% { transform: translate(-2%, 2%) scale(0.9); }
+}
+
+@keyframes shine {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+.animate-shine {
+  animation: shine 1.5s infinite;
+}

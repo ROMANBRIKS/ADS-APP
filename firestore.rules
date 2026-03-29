@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'points', 'xp', 'level', 'streak', 'totalAdsWatched']) &&
+             data.uid is string &&
+             data.email is string &&
+             data.points is number && data.points >= 0 &&
+             data.xp is number && data.xp >= 0 &&
+             data.level is number && data.level >= 1 &&
+             data.streak is number && data.streak >= 0 &&
+             data.totalAdsWatched is number && data.totalAdsWatched >= 0;
+    }
+
+    function isValidAdLog(data) {
+      return data.keys().hasAll(['userId', 'adId', 'timestamp', 'pointsEarned']) &&
+             data.userId == request.auth.uid &&
+             data.adId is string &&
+             data.pointsEarned is number && data.pointsEarned >= 0;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isAuthenticated(); // Allow reading profiles for leaderboards
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidUser(request.resource.data);
+    }
+
+    match /adLogs/{logId} {
+      allow read: if isOwner(resource.data.userId);
+      allow create: if isAuthenticated() && isValidAdLog(request.resource.data);
+    }
+  }
+}

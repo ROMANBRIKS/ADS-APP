@@ -1,0 +1,45 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "The core user profile containing rewards, XP, and engagement stats.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique user identifier." },
+        "displayName": { "type": "string", "description": "User's display name." },
+        "email": { "type": "string", "format": "email", "description": "User's email address." },
+        "points": { "type": "number", "description": "Current redeemable points balance." },
+        "xp": { "type": "number", "description": "Total experience points earned." },
+        "level": { "type": "number", "description": "Current user level." },
+        "streak": { "type": "number", "description": "Consecutive days of engagement." },
+        "lastAdWatchedAt": { "type": "string", "format": "date-time", "description": "Timestamp of the last ad watched." },
+        "totalAdsWatched": { "type": "number", "description": "Total count of ads watched." },
+        "referralCode": { "type": "string", "description": "Unique referral code for the user." },
+        "referredBy": { "type": "string", "description": "Referral code of the user who invited this user." }
+      },
+      "required": ["uid", "email", "points", "xp", "level", "streak", "totalAdsWatched"]
+    },
+    "AdLog": {
+      "title": "AdLog",
+      "description": "A record of an ad being watched for tracking and anti-fraud.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID of the user who watched the ad." },
+        "adId": { "type": "string", "description": "Identifier for the ad." },
+        "timestamp": { "type": "string", "format": "date-time", "description": "When the ad was watched." },
+        "pointsEarned": { "type": "number", "description": "Points granted for this ad." }
+      },
+      "required": ["userId", "adId", "timestamp", "pointsEarned"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and balances."
+    },
+    "/adLogs/{logId}": {
+      "schema": "AdLog",
+      "description": "Audit log of ad engagement."
+    }
+  }
+}
