@@ -20,12 +20,12 @@ export function XPProgressBar({ currentXP, level }: XPProgressBarProps) {
           {currentXP.toLocaleString()} / {xpRequired.toLocaleString()} XP
         </p>
       </div>
-      <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/10">
+      <div className="h-4 w-full bg-white/[0.05] rounded-full overflow-hidden border border-white/20 relative backdrop-blur-md shadow-inner">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="h-full bg-gradient-to-r from-white/40 via-white to-white/40 shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+          transition={{ duration: 1, ease: "circOut" }}
+          className="h-full bg-white/30 relative shadow-[0_0_15px_rgba(255,255,255,0.3)]"
         />
       </div>
     </div>

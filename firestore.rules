@@ -36,9 +36,18 @@ service cloud.firestore {
     // ===============================================================
 
     match /users/{userId} {
-      allow read: if isAuthenticated(); // Allow reading profiles for leaderboards
+      allow read: if isOwner(userId);
       allow create: if isOwner(userId) && isValidUser(request.resource.data);
       allow update: if isOwner(userId) && isValidUser(request.resource.data);
+    }
+
+    match /leaderboard/{userId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isOwner(userId) && 
+        request.resource.data.keys().hasAll(['displayName', 'points', 'level', 'photoURL']) &&
+        request.resource.data.displayName is string &&
+        request.resource.data.points is number &&
+        request.resource.data.level is number;
     }
 
     match /adLogs/{logId} {

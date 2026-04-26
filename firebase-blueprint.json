@@ -30,12 +30,28 @@
         "pointsEarned": { "type": "number", "description": "Points granted for this ad." }
       },
       "required": ["userId", "adId", "timestamp", "pointsEarned"]
+    },
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "Public user profile data for the leaderboard.",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string", "description": "User's public display name." },
+        "points": { "type": "number", "description": "User's current points." },
+        "level": { "type": "number", "description": "User's current level." },
+        "photoURL": { "type": "string", "description": "User's profile photo URL." }
+      },
+      "required": ["displayName", "points", "level"]
     }
   },
   "firestore": {
     "/users/{userId}": {
       "schema": "User",
-      "description": "User profiles and balances."
+      "description": "User profiles and balances (Private)."
+    },
+    "/leaderboard/{userId}": {
+      "schema": "LeaderboardEntry",
+      "description": "Public leaderboard data."
     },
     "/adLogs/{logId}": {
       "schema": "AdLog",
